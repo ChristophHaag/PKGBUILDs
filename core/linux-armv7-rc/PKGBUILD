@@ -37,6 +37,7 @@ source=(#"http://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         'kernel.its'
         'kernel.keyblock'
         'kernel_data_key.vbprivk')
+
 md5sums=('22e297f4149c08304317e26e938a965d'
          '924680e95c07a5b2b74d3d62384b253d'
          '57a686c6674aa9896a590181ac15bdd4'
@@ -48,9 +49,9 @@ md5sums=('22e297f4149c08304317e26e938a965d'
          'a43cc24e0fc27caf96b03a7895dc6543'
          '47a9efe2f0114b099662706a5c4d45e5'
          'cc8885354fd6ce2bb63722a34c4d383a'
-         '90de6cf7852d31f6dcb1dc654bcf2340'
+         'f9aec47d8292be71a017c325dbc02ace'
          '1813b39074d01af6548951764a0f6444'
-         '4b0392e55063eb9f89d91affd1189fc5'
+         'bdc640c9bdb74ff9f74eb6fdb7ba9dc1'
          '61c5ff73c136ed07a7aadbf58db3d96a'
          '584777ae88bce2c5659960151b64c7d8')
 
@@ -282,58 +283,6 @@ _package-headers() {
   rm -rf "${pkgdir}"/usr/lib/modules/${_kernver}/build/arch/{alpha,arc,arm26,arm64,avr32,blackfin,c6x,cris,frv,h8300,hexagon,ia64,m32r,m68k,m68knommu,metag,mips,microblaze,mn10300,openrisc,parisc,powerpc,ppc,s390,score,sh,sh64,sparc,sparc64,tile,unicore32,um,v850,x86,xtensa}
 }
 
-_package-smileplug() {
-  pkgdesc="The Linux Kernel - ${_desc} - Marvell SMILE Plug"
-  depends=('linux-armv7-rc')
-  provides=('linux-armv7-rc-uimage')
-  conflicts=('linux-armv7-rc-uimage')
-
-  cd "${srcdir}/${_srcname}"
-
-  mkdir -p "${pkgdir}/boot" 
-  cat arch/$KARCH/boot/zImage arch/$KARCH/boot/dts/armada-370-smileplug.dtb > myimage
-  mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n "${pkgname}" -d myimage "${pkgdir}/boot/uImage"
-}
-
-_package-mirabox() {
-  pkgdesc="The Linux Kernel - ${_desc} - Globalscale Mirabox"
-  depends=('linux-armv7-rc')
-  provides=('linux-armv7-rc-uimage')
-  conflicts=('linux-armv7-rc-uimage')
-
-  cd "${srcdir}/${_srcname}"
-
-  mkdir -p "${pkgdir}/boot"
-  cat arch/$KARCH/boot/zImage arch/$KARCH/boot/dts/armada-370-mirabox.dtb > myimage
-  mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n "${pkgname}" -d myimage "${pkgdir}/boot/uImage"
-}
-
-_package-ax3() {
-  pkgdesc="The Linux Kernel - ${_desc} - OpenBlocks AX3-4"
-  depends=('linux-armv7-rc')
-  provides=('linux-armv7-rc-uimage')
-  conflicts=('linux-armv7-rc-uimage')
-
-  cd "${srcdir}/${_srcname}"
-
-  mkdir -p "${pkgdir}/boot"
-  cat arch/$KARCH/boot/zImage arch/$KARCH/boot/dts/armada-xp-openblocks-ax3-4.dtb > myimage
-  mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n "${pkgname}" -d myimage "${pkgdir}/boot/uImage"
-}
-
-_package-d3plug() {
-  pkgdesc="The Linux Kernel - ${_desc} - Globalscale D3Plug"
-  depends=('linux-armv7-rc')
-  provides=('linux-armv7-rc-uimage')
-  conflicts=('linux-armv7-rc-uimage')
-
-  cd "${srcdir}/${_srcname}"
-
-  mkdir -p "${pkgdir}/boot"
-  cat arch/$KARCH/boot/zImage arch/$KARCH/boot/dts/dove-d3plug.dtb > myimage
-  mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n "${pkgname}" -d myimage "${pkgdir}/boot/uImage"
-}
-
 _package-chromebook() {
   pkgdesc="The Linux Kernel - ${_desc} - Chromebooks"
   depends=('linux-armv7-rc')
@@ -357,7 +306,7 @@ _package-chromebook() {
   cp vmlinux.kpart "${pkgdir}/boot"
 }
 
-pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-smileplug" "${pkgbase}-mirabox" "${pkgbase}-ax3" "${pkgbase}-d3plug" "${pkgbase}-chromebook")
+pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-chromebook")
 for _p in ${pkgname[@]}; do
   eval "package_${_p}() {
     _package${_p#${pkgbase}}
